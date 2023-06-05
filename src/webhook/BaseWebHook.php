@@ -19,16 +19,6 @@ use cryptoscan\entity\BaseObject;
 abstract class BaseWebHook extends BaseObject
 {
     /**
-     * @var string
-     */
-    protected $eventType;
-
-    /**
-     * @var int
-     */
-    protected $retryCount;
-
-    /**
      * @var int
      */
     protected $id;
@@ -72,22 +62,6 @@ abstract class BaseWebHook extends BaseObject
      * @var int
      */
     protected $expireAt;
-
-    /**
-     * @return string
-     */
-    public function getEventType()
-    {
-        return $this->eventType;
-    }
-
-    /**
-     * @return int
-     */
-    public function getRetryCount()
-    {
-        return $this->retryCount;
-    }
 
     /**
      * @return int

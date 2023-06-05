@@ -109,7 +109,7 @@ class WebHookMessage
         $retryCount = array_key_exists('retry_count', $requestData) === true ? $requestData['retry_count'] : null;
         $data = array_key_exists('data', $requestData) === true ? $requestData['data'] : [];
 
-        return new self($eventType, $retryCount, $data);
+        return new static($eventType, $retryCount, $data);
     }
 
     /**

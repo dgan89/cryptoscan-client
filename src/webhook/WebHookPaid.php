@@ -27,6 +27,11 @@ class WebHookPaid extends BaseWebHook
     protected $transactionId;
 
     /**
+     * @var int
+     */
+    protected $paidAt;
+
+    /**
      * @return string
      */
     public function getPayerWallet()
@@ -40,5 +45,13 @@ class WebHookPaid extends BaseWebHook
     public function getTransactionId()
     {
         return $this->transactionId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPaidAt()
+    {
+        return $this->paidAt;
     }
 }
