@@ -18,7 +18,7 @@ use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 
 /**
- *
+ * Поиск инвойсов
  *
  * Class InvoiceSearchTest
  */
@@ -65,7 +65,6 @@ class InvoiceSearchTest extends TestCase
         $response = (new CryptoScanClient($auth, $provider))->invoiceSearch(123456);
         $item = current($response->getItems());
 
-        $this->assertIsArray($response->getItems());
         $this->assertCount(1, $response->getItems());
         $this->assertTrue($response->isSuccess());
 
@@ -73,8 +72,8 @@ class InvoiceSearchTest extends TestCase
         $this->assertEquals('TBjkHCYgMb1ohJq77aovAyw4kCMtBEtMGB', $item->getPayerWallet());
         $this->assertEquals('TBjkHCYgMb1ohJq77aovAyw4kCMtBEtMGN', $item->getWallet());
         $this->assertNull($item->getTransactionId());
-        $this->assertEquals('10.54', $item->getFinalAmount()->getValue());
-        $this->assertEquals('10.53', $item->getRequestedAmount()->getValue());
+        $this->assertEquals('10.54', $item->getFinalAmount());
+        $this->assertEquals('10.53', $item->getRequestedAmount());
         $this->assertEquals('completed', $item->getStatus());
         $this->assertEquals('287', $item->getClientReferenceId());
         $this->assertEquals('qwerty', $item->getMetadata());

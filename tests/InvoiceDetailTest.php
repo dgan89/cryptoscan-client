@@ -18,7 +18,7 @@ use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 
 /**
- *
+ * Просмотр инвойса
  *
  * Class InvoiceDetailTest
  */
@@ -67,8 +67,8 @@ class InvoiceDetailTest extends TestCase
         $this->assertEquals('TBjkHCYgMb1ohJq77aovAyw4kCMtBEtMGB', $response->getPayerWallet());
         $this->assertEquals('TBjkHCYgMb1ohJq77aovAyw4kCMtBEtMGN', $response->getWallet());
         $this->assertNull($response->getTransactionId());
-        $this->assertEquals('10.54', $response->getFinalAmount()->getValue());
-        $this->assertEquals('10.53', $response->getRequestedAmount()->getValue());
+        $this->assertEquals('10.54', $response->getFinalAmount());
+        $this->assertEquals('10.53', $response->getRequestedAmount());
         $this->assertEquals('completed', $response->getStatus());
         $this->assertEquals('287', $response->getClientReferenceId());
         $this->assertEquals('qwerty', $response->getMetadata());

@@ -9,7 +9,6 @@
 
 use cryptoscan\command\InvoiceCreate;
 use cryptoscan\CryptoScanClient;
-use cryptoscan\AuthSignature;
 use cryptoscan\factory\AuthFactory;
 use cryptoscan\factory\ProviderFactory;
 use cryptoscan\provider\HttpClientInterface;
@@ -20,7 +19,7 @@ use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 
 /**
- *
+ * Создание инвойса
  *
  * Class InvoiceCreateTest
  */
@@ -62,8 +61,8 @@ class InvoiceCreateTest extends TestCase
 
         $this->assertTrue($response->isSuccess());
         $this->assertEquals('12589', $response->getId());
-        $this->assertEquals('125.69', $response->getFinalAmount()->getValue());
-        $this->assertEquals('TNVq3iEcaGWbbsR34MTdg1JMTxvYFU8Qir', $response->getWallet()->getValue());
+        $this->assertEquals('125.69', $response->getFinalAmount());
+        $this->assertEquals('TNVq3iEcaGWbbsR34MTdg1JMTxvYFU8Qir', $response->getWallet());
         $this->assertEquals('1677422490', $response->getExpireAt());
     }
 }

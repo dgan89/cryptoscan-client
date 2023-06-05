@@ -18,7 +18,7 @@ use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 
 /**
- *
+ * Информация по пользователю
  *
  * Class UserDetailTest
  */

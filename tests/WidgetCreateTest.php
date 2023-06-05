@@ -19,7 +19,7 @@ use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 
 /**
- *
+ * Создание виджета
  *
  * Class WidgetCreateTest
  */
@@ -62,7 +62,7 @@ class WidgetCreateTest extends TestCase
 
         $this->assertTrue($response->isSuccess());
         $this->assertEquals('523654', $response->getId());
-        $this->assertEquals('133.23', $response->getFinalAmount()->getValue());
+        $this->assertEquals('133.23', $response->getFinalAmount());
         $this->assertEquals('TNVq3iEcaGWbbsR34MTdg1JMTxvYFU8Qir', $response->getWallet());
         $this->assertEquals('1677422490', $response->getExpireAt());
         $this->assertEquals('https://cryptoscan.one/payment/69908b3b-ac70-4652-9ca2-877e348a2dbe', $response->getWidgetUrl());
