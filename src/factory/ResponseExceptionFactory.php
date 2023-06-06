@@ -13,6 +13,7 @@ use cryptoscan\exception\AuthFailureException;
 use cryptoscan\exception\ClientExceptionInterface;
 use cryptoscan\exception\ClientFailureException;
 use cryptoscan\exception\InvalidDataException;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Создание исключения по ответу
@@ -32,12 +33,16 @@ class ResponseExceptionFactory
     /**
      * По ответу от сервера
      *
+     * @param ResponseInterface $response
      * @param FailureInterface $failure
      * @return ClientExceptionInterface
      */
-    public static function createByFailure(FailureInterface $failure)
+    public static function createByResponse(
+        ResponseInterface $response,
+        FailureInterface $failure
+    )
     {
-        switch ($failure->getStatus()) {
+        switch ($response->getStatusCode()) {
             case 400:
                 return new InvalidDataException($failure);
             case 401:

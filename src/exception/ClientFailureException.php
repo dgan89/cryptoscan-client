@@ -22,7 +22,7 @@ class ClientFailureException extends RuntimeException implements ClientException
     /**
      * @var FailureInterface
      */
-    private $failure;
+    private $response;
 
     /**
      * @param FailureInterface $failure
@@ -30,14 +30,14 @@ class ClientFailureException extends RuntimeException implements ClientException
     public function __construct(FailureInterface $failure)
     {
         parent::__construct($failure->getMessage(), $failure->getCode());
-        $this->failure = $failure;
+        $this->response = $failure;
     }
 
     /**
      * @return FailureInterface
      */
-    public function getFailure()
+    public function getResponse()
     {
-        return $this->failure;
+        return $this->response;
     }
 }

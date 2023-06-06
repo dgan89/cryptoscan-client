@@ -108,7 +108,7 @@ class HttpClientProvider implements ProviderInterface
         }
         $failure = FailureResponse::instanceByResponse($response);
 
-        throw ResponseExceptionFactory::createByFailure($failure);
+        throw ResponseExceptionFactory::createByResponse($response, $failure);
     }
 
     /**
