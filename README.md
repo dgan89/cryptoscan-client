@@ -74,7 +74,7 @@ https://cryptoscan.one/developer/index#invoice-view
 ```php
 ...
 $invoiceId = 123456;
-$result = $client->widgetCreate($invoiceId);
+$result = $client->invoiceDetail($invoiceId);
 ```
 
 ### Поиск Инвойса
@@ -130,7 +130,7 @@ HTTP клиент
 
 ```php
 // Создание своего HTTP клиента
-class MyHTTPClient extends HttpClientInterface
+class MyHTTPClient impliments HttpClientInterface
 {
     ...
 }
