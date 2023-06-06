@@ -46,16 +46,8 @@ class Amount
     /**
      * @return float
      */
-    public function asNumeric()
+    public function getValue()
     {
         return $this->value;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return (string)$this->value;
     }
 }

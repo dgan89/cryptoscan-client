@@ -46,7 +46,7 @@ class Metadata
     /**
      * @return string
      */
-    public function __toString()
+    public function getValue()
     {
         return $this->value;
     }

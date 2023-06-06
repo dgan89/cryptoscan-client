@@ -51,7 +51,7 @@ class WidgetCreateRequest implements RequestInterface
         return [
             "amount" => $command
                 ->getAmount()
-                ->asNumeric(),
+                ->getValue(),
             "client_reference_id" => $command->getClientReferenceId(),
             "widget_description" => $command->getWidgetDescription(),
             "back_url" => $command->getBackUrl(),

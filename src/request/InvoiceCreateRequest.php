@@ -47,13 +47,16 @@ class InvoiceCreateRequest implements RequestInterface
     public function getBody()
     {
         $command = $this->command;
+        $metadata = $command->getMetadata();
 
         return [
             "amount" => $command
                 ->getAmount()
-                ->asNumeric(),
+                ->getValue(),
+            "metadata" => $metadata != null ?
+                $metadata->getValue() :
+                null,
             "client_reference_id" => $command->getClientReferenceId(),
-            "metadata" => $command->getMetadata(),
         ];
     }
 }
