@@ -3,17 +3,19 @@
 namespace cryptoscan\contract;
 
 
+use cryptoscan\entity\Authorize;
+
 /**
  * Авторизация
  */
 interface AuthCredentialsInterface
 {
     /**
-     * HTTP заголовок авторизации
+     * Тип авторизации
      *
      * @return string
      */
-    public function getHttpHeaderName();
+    public function getAuthType();
 
     /**
      * Публичный ключ
@@ -25,8 +27,17 @@ interface AuthCredentialsInterface
     /**
      * Данные авторизации
      *
-     * @param array $requestData
+     * @param array $data
      * @return string
      */
-    public function getAuthCredentials(array $requestData);
+    public function getAuthCredentials(array $data);
+
+    /**
+     * Проверка доступа
+     *
+     * @param Authorize $authorize
+     * @param array $data
+     * @return bool
+     */
+    public function isAccessConfirmed(Authorize $authorize, array $data);
 }

@@ -18,7 +18,7 @@ use cryptoscan\contract\WidgetCreatedInterface;
 use cryptoscan\request\InvoiceCreateRequest;
 use cryptoscan\request\InvoiceDetailRequest;
 use cryptoscan\request\InvoiceSearchRequest;
-use cryptoscan\request\RequestInterface;
+use cryptoscan\request\HttpRequestInterface;
 use cryptoscan\request\UserDetailRequest;
 use cryptoscan\request\WidgetCreateRequest;
 use cryptoscan\response\InvoiceCreatedResponse;
@@ -47,7 +47,7 @@ class HttpMessageFactory
      * Запрос на создание инвойса
      *
      * @param InvoiceCreate $command
-     * @return RequestInterface
+     * @return HttpRequestInterface
      */
     public static function invoiceCreate(InvoiceCreate $command)
     {
@@ -69,7 +69,7 @@ class HttpMessageFactory
      * Запрос на создание виджета
      *
      * @param WidgetCreate $command
-     * @return RequestInterface
+     * @return HttpRequestInterface
      */
     public static function widgetCreate(WidgetCreate $command)
     {
@@ -91,7 +91,7 @@ class HttpMessageFactory
      * Запрос просмотра инвойса
      *
      * @param int $id
-     * @return RequestInterface
+     * @return HttpRequestInterface
      */
     public static function invoiceDetail($id)
     {
@@ -113,7 +113,7 @@ class HttpMessageFactory
      * Запрос поиска инвойсов
      *
      * @param string|int $query
-     * @return RequestInterface
+     * @return HttpRequestInterface
      */
     public static function invoiceSearch($query)
     {
@@ -134,7 +134,7 @@ class HttpMessageFactory
     /**
      * Запрос детальной информации по пользователю
      *
-     * @return RequestInterface
+     * @return HttpRequestInterface
      */
     public static function userDetail()
     {

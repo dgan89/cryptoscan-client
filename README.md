@@ -144,15 +144,39 @@ WebHook
 -----
 
 ### Обработка ответа платежа от сервера
+```php
+// Заголовок переданного запроса
+$headers = [
+    'public-key' => '...',
+    'signature' => '...',
+//    'private-key' => '...',
+];
+
+// Тело запроса
+$data = [
+    'event_type' => 'paid',
+    'retry_count' => 3,
+    ...
+];
+
+// Формирование WebHook запроса
+$webHookData = new WebHookRequest($headers, $data);
+
+$auth = AuthFactory::privateKey($publicKey, $privateKey);
+$webHookHandler = new WebHookHandler($auth);
+$message = $webHookHandler->handle($webHookData);
+```
+### Использование своего способа получения данных
 
 ```php
-$message = WebHookMessage::instanceFromRequest($requestData);
-// или
-$message = new WebHookMessage($eventType, $retryCount, $data);
-
-$webHook = new WebHookHandler($message);
-$result = $webHook->handle();
+class MyWebHookData impliments WebHookDataInterface
+{
+    ...
+}
+$webHookData = new MyWebHookData($headers, $data);
+....
 ```
+
 
 ### Доступные типы сообщений
 

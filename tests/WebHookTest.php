@@ -7,9 +7,11 @@
  */
 
 
-use cryptoscan\entity\WebHookMessage;
-use cryptoscan\webhook\WebHookExpired;
-use cryptoscan\webhook\WebHookPaid;
+use cryptoscan\exception\AuthFailureException;
+use cryptoscan\factory\AuthFactory;
+use cryptoscan\webhook\WebHookExpiredMessage;
+use cryptoscan\webhook\WebHookPaidMessage;
+use cryptoscan\webhook\WebHookRequest;
 use cryptoscan\WebHookHandler;
 use PHPUnit\Framework\TestCase;
 
@@ -26,13 +28,18 @@ class WebHookTest extends TestCase
      */
     public function testPaid()
     {
+        $headers = [
+            'public-key' => 'public',
+            'signature' => 'private',
+        ];
+
         $data = [
             'event_type' => 'paid',
             'retry_count' => 3,
             'data' => [
                 'id' => 1,
-                'wallet' => 'TBjkHCYgMb1ohJq77aovAyw4kCMtBEtMGN',
-                'payer_wallet' => 'TBjkHCYgMb1ohJq77aovAyw4kCMtBEtMGN',
+                'wallet' => 'TsdfsdfFDSGFHFGDGBFDGFG',
+                'payer_wallet' => 'TsdfsdfFDSGFHFGDGBFDGFG',
                 'transaction_id' => '123',
                 'final_amount' => 10.5,
                 'requested_amount' => 10.3,
@@ -45,17 +52,18 @@ class WebHookTest extends TestCase
             ],
         ];
 
-        $message = WebHookMessage::instanceFromRequest($data);
-        $webHook = new WebHookHandler($message);
+        $auth = AuthFactory::privateKey('public', 'private');
+        $message = new WebHookRequest($headers, $data);
+        $webHook = new WebHookHandler($auth);
 
-        $result = $webHook->handle();
+        $result = $webHook->handle($message);
 
-        $this->assertInstanceOf(WebHookPaid::class, $result);
-        $this->assertEquals('paid', $message->getEventType());
-        $this->assertEquals('3', $message->getRetryCount());
+        $this->assertInstanceOf(WebHookPaidMessage::class, $result);
+        $this->assertEquals('paid', $result->getEventType());
+        $this->assertEquals('3', $result->getRetryCount());
         $this->assertEquals('1', $result->getId());
-        $this->assertEquals('TBjkHCYgMb1ohJq77aovAyw4kCMtBEtMGN', $result->getWallet());
-        $this->assertEquals('TBjkHCYgMb1ohJq77aovAyw4kCMtBEtMGN', $result->getPayerWallet());
+        $this->assertEquals('TsdfsdfFDSGFHFGDGBFDGFG', $result->getWallet());
+        $this->assertEquals('TsdfsdfFDSGFHFGDGBFDGFG', $result->getPayerWallet());
         $this->assertEquals('123', $result->getTransactionId());
         $this->assertEquals('10.5', $result->getFinalAmount());
         $this->assertEquals('10.3', $result->getRequestedAmount());
@@ -72,12 +80,17 @@ class WebHookTest extends TestCase
      */
     public function testExpired()
     {
+        $headers = [
+            'public-key' => 'public',
+            'signature' => 'private',
+        ];
+
         $data = [
             'event_type' => 'expired',
             'retry_count' => 3,
             'data' => [
                 'id' => 1,
-                'wallet' => 'TBjkHCYgMb1ohJq77aovAyw4kCMtBEtMGN',
+                'wallet' => 'TsdfsdfFDSGFHFGDGBFDGFG',
                 'final_amount' => 10.5,
                 'requested_amount' => 10.3,
                 'status' => 'completed',
@@ -88,16 +101,17 @@ class WebHookTest extends TestCase
             ],
         ];
 
-        $message = WebHookMessage::instanceFromRequest($data);
-        $webHook = new WebHookHandler($message);
+        $auth = AuthFactory::privateKey('public', 'private');
+        $message = new WebHookRequest($headers, $data);
+        $webHook = new WebHookHandler($auth);
 
-        $result = $webHook->handle();
+        $result = $webHook->handle($message);
 
-        $this->assertInstanceOf(WebHookExpired::class, $result);
-        $this->assertEquals('expired', $message->getEventType());
-        $this->assertEquals('3', $message->getRetryCount());
+        $this->assertInstanceOf(WebHookExpiredMessage::class, $result);
+        $this->assertEquals('expired', $result->getEventType());
+        $this->assertEquals('3', $result->getRetryCount());
         $this->assertEquals('1', $result->getId());
-        $this->assertEquals('TBjkHCYgMb1ohJq77aovAyw4kCMtBEtMGN', $result->getWallet());
+        $this->assertEquals('TsdfsdfFDSGFHFGDGBFDGFG', $result->getWallet());
         $this->assertEquals('10.5', $result->getFinalAmount());
         $this->assertEquals('10.3', $result->getRequestedAmount());
         $this->assertEquals('completed', $result->getStatus());
@@ -105,5 +119,53 @@ class WebHookTest extends TestCase
         $this->assertEquals('example', $result->getMetadata());
         $this->assertEquals('1678993517', $result->getCreatedAt());
         $this->assertEquals('1678993517', $result->getExpireAt());
+    }
+
+    /**
+     * @return void
+     */
+    public function testAccessDeniedPrivate()
+    {
+        $this->expectException(AuthFailureException::class);
+        $headers = [
+            'public-key' => 'public2',
+            'signature' => 'private',
+        ];
+
+        $data = [
+            'event_type' => 'expired',
+            'retry_count' => 3,
+            'data' => [],
+        ];
+
+        $auth = AuthFactory::privateKey('public', 'private');
+        $message = new WebHookRequest($headers, $data);
+        $webHook = new WebHookHandler($auth);
+
+        $webHook->handle($message);
+    }
+
+    /**
+     * @return void
+     */
+    public function testAccessDeniedSignature()
+    {
+        $this->expectException(AuthFailureException::class);
+        $headers = [
+            'public-key' => 'public',
+            'signature' => 'qwerty',
+        ];
+
+        $data = [
+            'event_type' => 'expired',
+            'retry_count' => 3,
+            'data' => [],
+        ];
+
+        $auth = AuthFactory::signature('public', 'private');
+        $message = new WebHookRequest($headers, $data);
+        $webHook = new WebHookHandler($auth);
+
+        $webHook->handle($message);
     }
 }

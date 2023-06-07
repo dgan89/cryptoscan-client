@@ -9,7 +9,7 @@ namespace cryptoscan\request;
  * Class UserDetailRequest
  * @package cryptoscan\request
  */
-class UserDetailRequest implements RequestInterface
+class UserDetailRequest implements HttpRequestInterface
 {
     /**
      * @inheritDoc

@@ -10,7 +10,7 @@ use cryptoscan\command\WidgetCreate;
  * Class WidgetCreateRequest
  * @package cryptoscan\request
  */
-class WidgetCreateRequest implements RequestInterface
+class WidgetCreateRequest implements HttpRequestInterface
 {
     /**
      * @var WidgetCreate

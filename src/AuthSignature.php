@@ -3,6 +3,7 @@
 namespace cryptoscan;
 
 use cryptoscan\contract\AuthCredentialsInterface;
+use cryptoscan\entity\Authorize;
 
 /**
  * Авторизация по сигнатуре подписи
@@ -39,7 +40,7 @@ class AuthSignature implements AuthCredentialsInterface
     /**
      * @inheritDoc
      */
-    public function getHttpHeaderName()
+    public function getAuthType()
     {
         return 'signature';
     }
@@ -47,10 +48,10 @@ class AuthSignature implements AuthCredentialsInterface
     /**
      * @inheritDoc
      */
-    public function getAuthCredentials(array $requestData)
+    public function getAuthCredentials(array $data)
     {
         $privateKey = $this->privateKey;
-        $requestBody = array_merge($requestData, [
+        $requestBody = array_merge($data, [
             'api_key' => $this->publicKey,
         ]);
         ksort($requestBody);
@@ -64,5 +65,15 @@ class AuthSignature implements AuthCredentialsInterface
     public function getPublicKey()
     {
         return $this->publicKey;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isAccessConfirmed(Authorize $authorize, array $data)
+    {
+        return
+            $authorize->getPublicKey() === $this->getPublicKey() &&
+            $authorize->getCredentials() === $this->getAuthCredentials($data);
     }
 }

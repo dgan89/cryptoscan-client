@@ -11,7 +11,7 @@ use cryptoscan\contract\UserDetailInterface;
 use cryptoscan\contract\WidgetCreatedInterface;
 use cryptoscan\factory\ProviderFactory;
 use cryptoscan\contract\AuthCredentialsInterface;
-use cryptoscan\provider\ProviderInterface;
+use cryptoscan\provider\ApiProviderInterface;
 
 /**
  * Клиент работы с сервисом CryptoScan
@@ -37,18 +37,18 @@ class CryptoScanClient
     /**
      * Провайдер данных
      *
-     * @var ProviderInterface
+     * @var ApiProviderInterface
      */
     private $provider;
 
     /**
      * CryptoScan constructor.
      * @param AuthCredentialsInterface $authCredentials
-     * @param ProviderInterface|null $provider
+     * @param ApiProviderInterface|null $provider
      */
     public function __construct(
         AuthCredentialsInterface $authCredentials,
-        ProviderInterface        $provider = null
+        ApiProviderInterface     $provider = null
     )
     {
         $this->authCredentials = $authCredentials;
@@ -72,7 +72,7 @@ class CryptoScanClient
      *
      * @return void
      */
-    private function setProvider(ProviderInterface $provider = null)
+    private function setProvider(ApiProviderInterface $provider = null)
     {
         $provider = $provider ?: ProviderFactory::http();
         $provider->setAuthCredentials($this->authCredentials);

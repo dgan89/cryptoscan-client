@@ -37,7 +37,7 @@ class InvoiceCreateTest extends TestCase
               "data": {
                 "id": "12589",
                 "final_amount": "125.69",
-                "wallet": "TNVq3iEcaGWbbsR34MTdg1JMTxvYFU8Qir",
+                "wallet": "TsdfsdfFDSGFHFGDGBFDGFG",
                 "expire_at": "1677422490"
               }
             }'),
@@ -62,7 +62,7 @@ class InvoiceCreateTest extends TestCase
         $this->assertTrue($response->isSuccess());
         $this->assertEquals('12589', $response->getId());
         $this->assertEquals('125.69', $response->getFinalAmount());
-        $this->assertEquals('TNVq3iEcaGWbbsR34MTdg1JMTxvYFU8Qir', $response->getWallet());
+        $this->assertEquals('TsdfsdfFDSGFHFGDGBFDGFG', $response->getWallet());
         $this->assertEquals('1677422490', $response->getExpireAt());
     }
 }

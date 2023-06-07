@@ -9,6 +9,7 @@
 namespace cryptoscan\factory;
 
 use cryptoscan\entity\Amount;
+use cryptoscan\entity\Authorize;
 use cryptoscan\entity\Metadata;
 
 /**
@@ -50,5 +51,17 @@ class EntityFactory
         return ($value instanceof Metadata) === true ?
             $value :
             new Metadata($value);
+    }
+
+    /**
+     * Данные авторизации
+     *
+     * @param string|null $publicKey
+     * @param string|null $credential
+     * @return Authorize
+     */
+    public static function authorize($publicKey, $credential)
+    {
+        return new Authorize($publicKey, $credential);
     }
 }

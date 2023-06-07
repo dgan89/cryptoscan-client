@@ -35,8 +35,8 @@ class InvoiceDetailTest extends TestCase
               "success": true,
               "data": {
                 "id": 32,
-                "wallet": "TBjkHCYgMb1ohJq77aovAyw4kCMtBEtMGN",
-                "payer_wallet": "TBjkHCYgMb1ohJq77aovAyw4kCMtBEtMGB",
+                "wallet": "TsdfsdfFDSGFHFGDGBFDGFG",
+                "payer_wallet": "ThfghfghKNJLNJK",
                 "transaction_id": null,
                 "final_amount": 10.54,
                 "requested_amount": "10.53",
@@ -64,8 +64,8 @@ class InvoiceDetailTest extends TestCase
 
         $this->assertTrue($response->isSuccess());
         $this->assertEquals('32', $response->getId());
-        $this->assertEquals('TBjkHCYgMb1ohJq77aovAyw4kCMtBEtMGB', $response->getPayerWallet());
-        $this->assertEquals('TBjkHCYgMb1ohJq77aovAyw4kCMtBEtMGN', $response->getWallet());
+        $this->assertEquals('ThfghfghKNJLNJK', $response->getPayerWallet());
+        $this->assertEquals('TsdfsdfFDSGFHFGDGBFDGFG', $response->getWallet());
         $this->assertNull($response->getTransactionId());
         $this->assertEquals('10.54', $response->getFinalAmount());
         $this->assertEquals('10.53', $response->getRequestedAmount());

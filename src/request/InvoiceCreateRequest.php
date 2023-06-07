@@ -10,7 +10,7 @@ use cryptoscan\command\InvoiceCreate;
  * Class InvoiceCreateRequest
  * @package cryptoscan\request
  */
-class InvoiceCreateRequest implements RequestInterface
+class InvoiceCreateRequest implements HttpRequestInterface
 {
     /**
      * @var InvoiceCreate

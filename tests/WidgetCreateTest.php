@@ -37,7 +37,7 @@ class WidgetCreateTest extends TestCase
               "data": {
                 "id": "523654",
                 "final_amount": "133.23",
-                "wallet": "TNVq3iEcaGWbbsR34MTdg1JMTxvYFU8Qir",
+                "wallet": "TsdfsdfFDSGFHFGDGBFDGFG",
                 "expire_at": "1677422490",
                 "widget_url": "https://cryptoscan.one/payment/69908b3b-ac70-4652-9ca2-877e348a2dbe"
               }
@@ -63,7 +63,7 @@ class WidgetCreateTest extends TestCase
         $this->assertTrue($response->isSuccess());
         $this->assertEquals('523654', $response->getId());
         $this->assertEquals('133.23', $response->getFinalAmount());
-        $this->assertEquals('TNVq3iEcaGWbbsR34MTdg1JMTxvYFU8Qir', $response->getWallet());
+        $this->assertEquals('TsdfsdfFDSGFHFGDGBFDGFG', $response->getWallet());
         $this->assertEquals('1677422490', $response->getExpireAt());
         $this->assertEquals('https://cryptoscan.one/payment/69908b3b-ac70-4652-9ca2-877e348a2dbe', $response->getWidgetUrl());
     }

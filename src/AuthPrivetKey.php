@@ -3,6 +3,7 @@
 namespace cryptoscan;
 
 use cryptoscan\contract\AuthCredentialsInterface;
+use cryptoscan\entity\Authorize;
 
 /**
  * Авторизация по приватному ключу
@@ -39,7 +40,7 @@ class AuthPrivetKey implements AuthCredentialsInterface
     /**
      * @inheritDoc
      */
-    public function getHttpHeaderName()
+    public function getAuthType()
     {
         return 'private-key';
     }
@@ -47,7 +48,7 @@ class AuthPrivetKey implements AuthCredentialsInterface
     /**
      * @inheritDoc
      */
-    public function getAuthCredentials(array $requestData)
+    public function getAuthCredentials(array $data)
     {
         return $this->privateKey;
     }
@@ -58,5 +59,15 @@ class AuthPrivetKey implements AuthCredentialsInterface
     public function getPublicKey()
     {
         return $this->publicKey;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isAccessConfirmed(Authorize $authorize, array $data)
+    {
+        return
+            $authorize->getPublicKey() === $this->getPublicKey() &&
+            $authorize->getCredentials() === $this->getAuthCredentials($data);
     }
 }

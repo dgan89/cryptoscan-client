@@ -7,7 +7,7 @@ use cryptoscan\command\WidgetCreate;
 use cryptoscan\contract\AuthCredentialsInterface;
 use cryptoscan\factory\HttpMessageFactory;
 use cryptoscan\factory\ResponseExceptionFactory;
-use cryptoscan\request\RequestInterface;
+use cryptoscan\request\HttpRequestInterface;
 use cryptoscan\response\FailureResponse;
 use Psr\Http\Message\ResponseInterface;
 
@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
  * Class CryptoScanHttpProvider
  * @package cryptoscan\provider
  */
-class HttpClientProvider implements ProviderInterface
+class HttpClientProvider implements ApiProviderInterface
 {
     /**
      * @var HttpClientInterface
@@ -25,7 +25,7 @@ class HttpClientProvider implements ProviderInterface
     private $httpClient;
 
     /**
-     * @var AuthCredentialsInterface
+     * @var AuthCredentialsInterface|null
      */
     private $authCredentials;
 
@@ -93,10 +93,10 @@ class HttpClientProvider implements ProviderInterface
     }
 
     /**
-     * @param RequestInterface $request
+     * @param HttpRequestInterface $request
      * @return ResponseInterface
      */
-    private function safeRequest(RequestInterface $request)
+    private function safeRequest(HttpRequestInterface $request)
     {
         $response = $this->request($request);
 
@@ -112,17 +112,18 @@ class HttpClientProvider implements ProviderInterface
     }
 
     /**
-     * @param RequestInterface $request
+     * @param HttpRequestInterface $request
      * @return ResponseInterface
      */
-    private function request(RequestInterface $request)
+    private function request(HttpRequestInterface $request)
     {
         $client = $this->httpClient;
         $credentials = $this->authCredentials;
         $body = $request->getBody();
+
         $headers = [
             'public-key' => $credentials->getPublicKey(),
-            $credentials->getHttpHeaderName() => $credentials->getAuthCredentials($body),
+            $credentials->getAuthType() => $credentials->getAuthCredentials($body),
         ];
 
         return $client->sendRequest(

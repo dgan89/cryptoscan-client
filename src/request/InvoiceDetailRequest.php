@@ -9,7 +9,7 @@ namespace cryptoscan\request;
  * Class InvoiceDetailRequest
  * @package cryptoscan\request
  */
-class InvoiceDetailRequest implements RequestInterface
+class InvoiceDetailRequest implements HttpRequestInterface
 {
     /**
      * ID инвойса

@@ -8,9 +8,11 @@
 
 namespace cryptoscan;
 
-use cryptoscan\entity\WebHookMessage;
-use cryptoscan\factory\WebHookFactory;
-use cryptoscan\webhook\BaseWebHook;
+use cryptoscan\contract\AuthCredentialsInterface;
+use cryptoscan\factory\ProviderFactory;
+use cryptoscan\provider\WebHookProviderInterface;
+use cryptoscan\webhook\WebHookMessage;
+use cryptoscan\webhook\WebHookDataInterface;
 
 /**
  * Обработка сообщения WebHook
@@ -21,23 +23,48 @@ use cryptoscan\webhook\BaseWebHook;
 class WebHookHandler
 {
     /**
-     * @var WebHookMessage
+     * @var AuthCredentialsInterface
      */
-    private $message;
+    private $authCredentials;
 
     /**
-     * @param WebHookMessage $message
+     * @var WebHookProviderInterface
      */
-    public function __construct(WebHookMessage $message)
+    private $provider;
+
+    /**
+     * @param AuthCredentialsInterface $authCredentials
+     * @param WebHookProviderInterface|null $provider
+     */
+    public function __construct(
+        AuthCredentialsInterface $authCredentials,
+        WebHookProviderInterface $provider = null
+    )
     {
-        $this->message = $message;
+        $this->authCredentials = $authCredentials;
+        $this->setProvider($provider);
     }
 
     /**
-     * @return BaseWebHook
+     * @return WebHookMessage
      */
-    public function handle()
+    public function handle(WebHookDataInterface $request)
     {
-        return WebHookFactory::create($this->message);
+        return $this
+            ->provider
+            ->messageHandler($request);
+    }
+
+    /**
+     * Установка провайдера данных
+     *
+     * @return void
+     */
+    private function setProvider(WebHookProviderInterface $provider = null)
+    {
+        $provider = $provider ?: ProviderFactory::webHook();
+        $provider->setAuthCredentials($this->authCredentials);
+
+        $this->provider = $provider;
     }
 }

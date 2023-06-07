@@ -8,9 +8,12 @@
 
 namespace cryptoscan\factory;
 
+use cryptoscan\provider\ApiProviderInterface;
 use cryptoscan\provider\GuzzleHttpClient;
 use cryptoscan\provider\HttpClientInterface;
 use cryptoscan\provider\HttpClientProvider;
+use cryptoscan\provider\WebHookProvider;
+use cryptoscan\provider\WebHookProviderInterface;
 
 /**
  * Создание провайдера данных
@@ -28,15 +31,25 @@ class ProviderFactory
     }
 
     /**
-     * HTTP провайдер данных
+     * HTTP API провайдер данных
      *
      * @param HttpClientInterface|null $client
-     * @return HttpClientProvider
+     * @return ApiProviderInterface
      */
     public static function http(HttpClientInterface $client = null)
     {
         $client = $client ?: new GuzzleHttpClient();
 
         return new HttpClientProvider($client);
+    }
+
+    /**
+     * WebHook провайдер данных
+     *
+     * @return WebHookProviderInterface
+     */
+    public static function webHook()
+    {
+        return new WebHookProvider();
     }
 }
